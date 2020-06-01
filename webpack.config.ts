@@ -1,8 +1,9 @@
 import {Configuration} from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
+import express from 'express'
 
-const config: Configuration = {
+const config: Configuration & { devServer: any } = {
   mode: "development",
   entry: './src/entry.ts',
   output: {
@@ -29,7 +30,14 @@ const config: Configuration = {
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }) as any
-  ]
+  ],
+  devServer: {
+    contentBase: './staticFiles/', // TODO: 没搞清楚具体作用
+    watchContentBase: true,
+    before: (app: any) => {
+      app.use('/static', express.static('./staticFiles/'));
+    }
+  },
 }
 
 export default config;

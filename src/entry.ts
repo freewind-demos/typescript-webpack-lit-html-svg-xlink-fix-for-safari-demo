@@ -1,11 +1,13 @@
-import {html, render, TemplateResult} from 'lit-html';
+import {html, render} from 'lit-html';
+import {xlinkNamespace} from "./xlinkNamespace";
 
-function sayHello(name: string): TemplateResult {
-  return html`<h1>Hello ${name}</h1>`;
-}
+const goodSvgInSafari = html`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <use href="${xlinkNamespace('sample.svg#Layer_1')}"/>
+</svg>`
 
-render(sayHello('world'), document.body);
+const badSvgInSafari = html`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <use href="sample.svg#Layer_1"/>
+</svg>`
 
-setTimeout(() => {
-  render(sayHello('lit-html'), document.body);
-}, 1000)
+render(goodSvgInSafari, document.getElementById('main1')!);
+render(badSvgInSafari, document.getElementById('main2')!);
